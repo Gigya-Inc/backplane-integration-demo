@@ -95,7 +95,7 @@
         cache: false,
         complete: function(jqXHR, textStatus) {
           jqXHR.done(function(response) {
-            if(!response.success) {
+            if(response.success) {
               // Write channelID to cookie -- this means that the user is logged in
               $.cookie(settings.cookieName, channelID);
               refreshUI();
@@ -136,13 +136,11 @@
 
   // Initialize Backplane if necessary
   if(settings.initBackplane) {
-    $(document).ready(function() {
-      // Generic Backplane init
-      // http://wiki.aboutecho.com/w/page/28068607/Single%20Sign%20On#Proprietaryloginonly
-      Backplane.init({
-        "serverBaseURL" : settings.serverBaseURL,
-        "busName": settings.busName
-      });
+    // Generic Backplane init
+    // http://wiki.aboutecho.com/w/page/28068607/Single%20Sign%20On#Proprietaryloginonly
+    Backplane.init({
+      "serverBaseURL" : settings.serverBaseURL,
+      "busName": settings.busName
     });
   }
 }(jQuery));

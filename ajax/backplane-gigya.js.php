@@ -50,7 +50,6 @@ try {
     'display_name'  => $userInfo->getString('nickname'),
     'photo'         => $userInfo->getString('photoURL'),
   )), true);
-  var_dump($backplaneResponse);
   if($backplaneResponse['result'] === 'error') {
     throw new ErrorException($backplaneResponse['errorMessage']);
   }
