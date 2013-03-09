@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Backplane / Gigya Integration</title>
+  <!-- Required for Gigya: -->
+  <script src="http://cdn.gigya.com/JS/socialize.js?apikey=2_yM8ACPAsEmp9GNWZaf9pms70VCJ317NzLHdkDRNHsAwIgLFrt1xKmOjmqt1lnTS1">{
+    forceProvidersLogout: false
+  }</script>
+
+  <!-- Required for Backplane: -->
+  <script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="http://cdn.echoenabled.com/clientapps/v2/backplane.js"></script>
+
+  <!-- Required for Backplane / Gigya integration: -->
+  <script src="//cdn.jsdelivr.net/jquery.cookie/1.3.1/jquery.cookie.js"></script>
+  <script src="js/backplane-gigya.js">{
+    initBackplane: true,
+    serverBaseURL: "http://api.echoenabled.com/v1",
+    busName: "", // Should be set to Backplane business name
+    ajaxURL: "ajax/backplane-gigya.js.php"
+  }</script>
+
+  <script type="text/javascript">
+  $(document).ready(function() {
+    $("#login").on("click", function() {
+      gigya.socialize.showLoginUI();
+    });
+    $("#logout").on("click", function() {
+      gigya.socialize.logout();
+    });
+
+    // Toggle UI state based on login state
+    var loginUIState = function() {
+      $("#login").hide();
+      $("#logout").show();
+    };
+    var logoutUIState = function() {
+      $("#login").show();
+      $("#logout").hide();
+    };
+    gigya.socialize.addEventHandlers({
+      onLogin: loginUIState,
+      onLogout: logoutUIState
+    });
+    gigya.socialize.getUserInfo({
+      callback: function(user) {
+        if(user.UID) {
+          loginUIState();
+        } else {
+          logoutUIState();
+        }
+      }
+    });
+  });
+  </script>
+</head>
+<body>
+  <div id="login" style="display: none;"><a href="javascript: void(0);">Login with Gigya</a></div>
+  <div id="logout" style="display: none;"><a href="javascript: void(0);">Logout</a></div>
+</body>
+</html>
